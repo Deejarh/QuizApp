@@ -1,0 +1,52 @@
+{
+    "questions": [
+      {
+        "question": "Which of this is not a JavaScript framework 0?",
+        "options": [
+          "Angular",
+          "React",
+          "Laravel",
+          "Vue"
+        ],
+        "correctOption": 2,
+        "points": 10
+      },
+      {
+        "question": "Which of this is not a JavaScript framework 1?",
+        "options": [
+          "Angular",
+          "React",
+          "Vue",
+          "Laravel"
+          
+        ],
+        "correctOption": 3,
+        "points": 10
+      },
+      {
+        "question": "Which of this is not a JavaScript framework 2?",
+        "options": [
+          "Angular",
+          "React",
+          "Vue",
+          "Laravel"
+          
+        ],
+        "correctOption": 3,
+        "points": 10
+      },
+      {
+        "question": "Which of this is not a JavaScript framework 3?",
+        "options": [
+          "Angular",
+          "React",
+          "Vue",
+          "Laravel"
+          
+        ],
+        "correctOption": 3,
+        "points": 10
+      }
+    ]
+  }
+  
