@@ -1,8 +1,7 @@
-'use client';
 
 import type { Question } from '../utils/types';
 
-export default function CurrenQuestion({ question }: { question: Question }) {
+export default function Question({ question }: { question: Question }) {
   return (
     <div>
       <h2> {question.question}</h2>
