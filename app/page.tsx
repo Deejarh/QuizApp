@@ -32,6 +32,14 @@ export default function Home() {
             <li key={category} onClick={() => handleSelectedCategory(category)}>
               {" "}
               <Chip
+              sx={{
+                color: 'white',
+                p: 3,
+                minWidth: 150,
+                borderRadius: 6,
+                fontSize: 20
+              }}
+              className=" hover:opacity-70"
                 label={category}
                 color={selectedCategory === category ? "secondary" : "default"}
               />
@@ -41,11 +49,19 @@ export default function Home() {
 
         {/* quiz level */}
 
-        <ul className=" flex flex-row  gap-4 py-2 text-white cursor-pointer">
+        <ul className=" flex flex-row  gap-4 py-2 mt-6 text-white cursor-pointer">
           {levels.map((level) => (
             <li key={level} onClick={() => handleSelectedLevel(level)}>
               {" "}
               <Chip
+              sx={{
+                color: 'white',
+                p: 3,
+                borderRadius: 6,
+                minWidth: 150,
+                fontSize: 20
+              }}
+              className=" hover:opacity-70"
                 label={level}
                 color={selectedLevel === level ? "secondary" : "default"}
               />
@@ -61,6 +77,12 @@ export default function Home() {
             passHref
           >
             <Button
+            sx={{
+              background: 'green',
+              borderRadius: 6,
+              p:2,
+              width: 150
+            }}
               variant="contained"
               disabled={!selectedCategory}
               endIcon={<HourglassEmptyIcon />}
