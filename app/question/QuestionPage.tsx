@@ -1,10 +1,11 @@
-'use client'
+"use client";
 import Question from '../components/Question';
 import type { Question as QuestionType } from '../utils/types';
 import { Button } from '@mui/material';
 import { useReducer } from 'react';
 import Timer from '../components/Timer';
 import FinishScreen from '../components/FinishScreen';
+import Progress from '../components/Progress';
 
 
 
@@ -30,7 +31,7 @@ function initialState (quiz: QuestionType[]): StateType {
     index: 0,
     answer: null,
     points: 0,
-    secondsRemaining: 5,
+    secondsRemaining: 10,
   }   
 }
 
@@ -51,7 +52,7 @@ function reducer(state: StateType , action: ActionType): StateType {
         ...state,
         index: state.index + 1,
         answer: null,
-        secondsRemaining: 5,
+        secondsRemaining: 10,
       };
     case "tick":
       return {
@@ -82,15 +83,12 @@ export default function QuestionPage({quiz}: {quiz : QuestionType[]}) {
     }
   };
   return (
-    <main className='w-full lg:w-[700px] grid  justify-center'>
+    <main className='w-full lg:w-[700px] grid h-screen p-8   justify-center'>
       {status === "active" && (
         <>
           <div>
-          <progress
-          className=' w-full top-2'
-        max={totalQuestion}
-        value={index + Number(answer !== null)}
-      ></progress>
+
+         <Progress totalQuestion={totalQuestion} index={index} answer={answer} />
             <Timer
               dispatch={dispatch}
               secondsRemaining={secondsRemaining}
@@ -104,8 +102,13 @@ export default function QuestionPage({quiz}: {quiz : QuestionType[]}) {
               secondsRemaining={secondsRemaining}
             />
           </div>
-          <div className=" flex w-full justify-end py-6">   
-              <Button variant="contained" onClick={handleNextQuestion}>
+          <div className=" flex w-full justify-end max-h-10 ">   
+              <Button variant="contained" disabled={answer === null} onClick={handleNextQuestion}
+              sx={{"&.Mui-disabled": {
+                backgroundColor: "gray",
+                color: "white"
+              }}}
+              >
                 {index === questions.length - 1 ? "Finish" : "Next"}
               </Button>
           </div>

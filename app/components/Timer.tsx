@@ -35,11 +35,13 @@ function Timer({
     [dispatch, secondsRemaining, index, totalQuestion]
   );
   return (
-    <button className="btn btn-ui">
+    <div className=" w-full  flex items-center justify-center mb-12 mt-5">
+      <div  className={` ${ sec <= 3 ? ' text-red-400' : '' } border rounded-full py-2 px-4 font-bold text-xl shadow-lg `}>
       {minute < 10 ? "0" : ""}
       {minute} : {sec < 10 ? "0" : ""}
       {sec}
-    </button>
+      </div>
+    </div>
   );
 }
 

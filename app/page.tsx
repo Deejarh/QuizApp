@@ -1,16 +1,18 @@
 "use client";
+
 import { useState } from "react";
 import { CATEGORIES, LEVELS } from "./utils/constants";
-import Chip from '@mui/material/Chip';
-import Button from '@mui/material/Button';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import Link from 'next/link';
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import Link from "next/link";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 
 export default function Home() {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('easy');
-  const categories = CATEGORIES;
-  const levels = LEVELS;
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("easy");
 
   const handleSelectedCategory = (category: string) => {
     setSelectedCategory(category);
@@ -20,78 +22,106 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <main className="text-white ">
-        <h1 className=" my-2">
-          Choose a category and preffered difficulty to start the quiz.
-        </h1>
+    <Box sx={{ padding: 4, color: "white" }}>
+      <Typography variant="h4" sx={{ marginBottom: 4, fontWeight: "bold" }}>
+        Choose a category and preferred difficulty to start the quiz
+      </Typography>
 
-        {/* categories */}
-        <ul className=" flex flex-row  gap-4 py-2  cursor-pointer">
-          {categories.map((category) => (
-            <li key={category} onClick={() => handleSelectedCategory(category)}>
-              {" "}
-              <Chip
+      {/* Categories Section */}
+      <Box>
+        <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
+          Categories
+        </Typography>
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+          {CATEGORIES.map((category) => (
+            <Chip
+              key={category}
+              label={category}
+              onClick={() => handleSelectedCategory(category)}
+              color={selectedCategory === category ? "secondary" : "default"}
               sx={{
-                color: 'white',
-                p: 3,
-                minWidth: 150,
+                backgroundColor:
+                  selectedCategory === category ? "purple" : "gray",
+                color: "white",
+                p: 2,
+                fontSize: 16,
                 borderRadius: 6,
-                fontSize: 20
-              }}
-              className=" hover:opacity-70"
-                label={category}
-                color={selectedCategory === category ? "secondary" : "default"}
-              />
-            </li>
-          ))}
-        </ul>
-
-        {/* quiz level */}
-
-        <ul className=" flex flex-row  gap-4 py-2 mt-6 text-white cursor-pointer">
-          {levels.map((level) => (
-            <li key={level} onClick={() => handleSelectedLevel(level)}>
-              {" "}
-              <Chip
-              sx={{
-                color: 'white',
-                p: 3,
-                borderRadius: 6,
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor:
+                    selectedCategory === category ? "darkviolet" : "lightgray",
+                },
                 minWidth: 150,
-                fontSize: 20
               }}
-              className=" hover:opacity-70"
-                label={level}
-                color={selectedLevel === level ? "secondary" : "default"}
-              />
-            </li>
+            />
           ))}
-        </ul>
+        </Box>
+      </Box>
 
-        <div className=" flex w-full justify-end py-6">
-          <Link
-            href={{
-              pathname: "/question",
-            }}
-            passHref
-          >
+      <Divider sx={{ my: 4, backgroundColor: "gray" }} />
+
+      {/* Levels Section */}
+      <Box>
+        <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
+          Levels
+        </Typography>
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+          {LEVELS.map((level) => (
             <Button
-            sx={{
-              background: 'green',
-              borderRadius: 6,
-              p:2,
-              width: 150
-            }}
-              variant="contained"
-              disabled={!selectedCategory}
-              endIcon={<HourglassEmptyIcon />}
+              key={level}
+              variant={selectedLevel === level ? "contained" : "outlined"}
+              onClick={() => handleSelectedLevel(level)}
+              sx={{
+                textTransform: "capitalize",
+                backgroundColor:
+                  selectedLevel === level ? "purple" : "transparent",
+                color: selectedLevel === level ? "white" : "gray",
+                border: "1px solid",
+                borderColor: selectedLevel === level ? "purple" : "gray",
+                p: 2,
+                borderRadius: 6,
+                fontSize: 16,
+                minWidth: 120,
+                "&:hover": {
+                  backgroundColor:
+                    selectedLevel === level ? "darkgreen" : "lightgray",
+                },
+              }}
             >
-              Play
+              {level}
             </Button>
-          </Link>
-        </div>
-      </main>
-    </div>
+          ))}
+        </Box>
+      </Box>
+
+      {/* Play Button */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 6 }}>
+        <Link
+          href={{
+            pathname: "/question",
+          }}
+          passHref
+        >
+          <Button
+            sx={{
+              backgroundColor: "green",
+              borderRadius: 6,
+              p: 2,
+              width: 150,
+              "&:hover": { backgroundColor: "darkblue" },
+              "&.Mui-disabled": {
+                backgroundColor: "gray",
+                color: "white",
+              },
+            }}
+            variant="contained"
+            disabled={!selectedCategory}
+            endIcon={<HourglassEmptyIcon />}
+          >
+            Play
+          </Button>
+        </Link>
+      </Box>
+    </Box>
   );
 }
