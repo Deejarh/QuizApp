@@ -17,10 +17,10 @@ function FinishScreen({ points, maxPoint }: FinishScreenProps) {
   if (percentage === 0) emoji = "🤦‍♀️";
 
   return (
-    <>
-      <p className=" result">
-        <span> {emoji}</span>You scored <strong> {points}</strong> out of{" "}
-        {maxPoint} ({Math.ceil(percentage)})%
+    <div className=" flex justify-center items-center flex-col">
+      <p className=" my-8 text-xl">
+        <span> {emoji}</span>You scored <strong className=" font-extrabold"> {points}</strong> out of{" "}
+        {maxPoint} 
       </p>
       <Link
         href={{
@@ -30,7 +30,7 @@ function FinishScreen({ points, maxPoint }: FinishScreenProps) {
       >
         <Button variant="contained">Restart Quiz</Button>
       </Link>
-    </>
+    </div>
   );
 }
 
