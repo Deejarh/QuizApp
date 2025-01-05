@@ -1,10 +1,9 @@
 import QuestionPage from './QuestionPage'; // Client Component
-import questionsData from '../data/questions.json';
 import type { Question as QuestionType } from '../utils/types';
+import {fetchQuestionsFromOpenAI} from '../lib/openai'
 
 // Server Component
 export default async function Page() {
-  const quiz: QuestionType[] = await questionsData.questions;
-
+  const quiz: QuestionType[] = await fetchQuestionsFromOpenAI();
   return <QuestionPage quiz={quiz} />;
 }
