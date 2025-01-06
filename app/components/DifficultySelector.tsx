@@ -1,5 +1,3 @@
-export default  function QuizLevel () {
-    return (
-        <div>Level list</div>
-    )
+export default function QuizLevel() {
+  return <div>Level list</div>;
 }

@@ -1,17 +1,17 @@
-import OpenAI from "openai";
+import OpenAI from 'openai';
 const openai = new OpenAI();
 
 export async function fetchQuestionsFromOpenAI() {
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: 'gpt-4o-mini',
       messages: [
         {
-          role: "system",
-          content: "You are a helpful assistant that generates quiz questions.",
+          role: 'system',
+          content: 'You are a helpful assistant that generates quiz questions.',
         },
         {
-          role: "user",
+          role: 'user',
           content: `Generate a JSON object with a "questions" array containing 10 multiple-choice questions.Do not include any extra characters like backticks or Markdown formatting. 
                    Each question object should have the following structure:
                    - "question": (string) The text of the question.
@@ -37,7 +37,7 @@ export async function fetchQuestionsFromOpenAI() {
     });
 
     if (!completion.choices || completion.choices.length === 0) {
-      throw new Error("No choices returned from OpenAI API");
+      throw new Error('No choices returned from OpenAI API');
     }
     const questions = completion.choices[0].message.content.trim();
     return JSON.parse(questions).questions;

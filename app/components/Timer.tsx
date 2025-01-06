@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 interface TimerProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: React.Dispatch<any>;
   secondsRemaining: number;
   index: number;
@@ -20,13 +21,13 @@ function Timer({
     function () {
       if (secondsRemaining === 0) {
         if (index === totalQuestion - 1) {
-          dispatch({ type: "finish" });
+          dispatch({ type: 'finish' });
         } else {
-          dispatch({ type: "nextQuestion" });
+          dispatch({ type: 'nextQuestion' });
         }
       } else {
         const id = setInterval(() => {
-          dispatch({ type: "tick" });
+          dispatch({ type: 'tick' });
         }, 1000);
 
         return () => clearInterval(id);
@@ -36,10 +37,12 @@ function Timer({
   );
   return (
     <div className=" w-full  flex items-center justify-center mb-12 mt-5">
-      <div  className={` ${ sec <= 3 ? ' text-red-400' : '' } border rounded-full py-2 px-4 font-bold text-xl shadow-lg `}>
-      {minute < 10 ? "0" : ""}
-      {minute} : {sec < 10 ? "0" : ""}
-      {sec}
+      <div
+        className={` ${sec <= 3 ? ' text-red-400' : ''} border rounded-full py-2 px-4 font-bold text-xl shadow-lg `}
+      >
+        {minute < 10 ? '0' : ''}
+        {minute} : {sec < 10 ? '0' : ''}
+        {sec}
       </div>
     </div>
   );

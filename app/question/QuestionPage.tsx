@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Question from '../components/Question';
 import type { Question as QuestionType } from '../utils/types';
 import { Button } from '@mui/material';
@@ -7,11 +7,9 @@ import Timer from '../components/Timer';
 import FinishScreen from '../components/FinishScreen';
 import Progress from '../components/Progress';
 
-
-
 interface StateType {
   questions: QuestionType[];
-  status: "loading" | "active" | "finish";
+  status: 'loading' | 'active' | 'finish';
   index: number;
   answer: number | null;
   points: number;
@@ -19,12 +17,12 @@ interface StateType {
 }
 
 type ActionType =
-  | { type: "newAnswer"; payload: number }
-  | { type: "nextQuestion" }
-  | { type: "tick" }
-  | { type: "finish" };
+  | { type: 'newAnswer'; payload: number }
+  | { type: 'nextQuestion' }
+  | { type: 'tick' }
+  | { type: 'finish' };
 
-function initialState (quiz: QuestionType[]): StateType {
+function initialState(quiz: QuestionType[]): StateType {
   return {
     questions: quiz,
     status: 'active',
@@ -32,12 +30,12 @@ function initialState (quiz: QuestionType[]): StateType {
     answer: null,
     points: 0,
     secondsRemaining: 10,
-  }   
+  };
 }
 
-function reducer(state: StateType , action: ActionType): StateType {
+function reducer(state: StateType, action: ActionType): StateType {
   switch (action.type) {
-    case "newAnswer":
+    case 'newAnswer': {
       const currentQuestion = state.questions.at(state.index);
       return {
         ...state,
@@ -47,33 +45,37 @@ function reducer(state: StateType , action: ActionType): StateType {
             ? state.points + currentQuestion.points
             : state.points,
       };
-    case "nextQuestion":
+    }
+    case 'nextQuestion':
       return {
         ...state,
         index: state.index + 1,
         answer: null,
         secondsRemaining: 10,
       };
-    case "tick":
+    case 'tick':
       return {
         ...state,
         secondsRemaining: state.secondsRemaining - 1,
       };
-    case "finish":
+    case 'finish':
       return {
         ...state,
-        status: "finish",
+        status: 'finish',
       };
     default:
-      throw new Error("Action unkown");
+      throw new Error('Action unkown');
   }
 }
 
-export default function QuestionPage({quiz}: {quiz : QuestionType[]}) {
-  const [state, dispatch] = useReducer(reducer, quiz, initialState)
+export default function QuestionPage({ quiz }: { quiz: QuestionType[] }) {
+  const [state, dispatch] = useReducer(reducer, quiz, initialState);
   const { status, questions, index, answer, points, secondsRemaining } = state;
-  const totalQuestion = questions.length
-  const maxPoint = questions.reduce((prev: number, curr: { points: number }) => prev + curr.points, 0)
+  const totalQuestion = questions.length;
+  const maxPoint = questions.reduce(
+    (prev: number, curr: { points: number }) => prev + curr.points,
+    0
+  );
 
   const handleNextQuestion = () => {
     if (index === questions.length - 1) {
@@ -83,12 +85,15 @@ export default function QuestionPage({quiz}: {quiz : QuestionType[]}) {
     }
   };
   return (
-    <main className='w-full lg:w-[700px] grid h-screen p-8   justify-center'>
-      {status === "active" && (
+    <main className="w-full lg:w-[700px] grid h-screen p-8   justify-center">
+      {status === 'active' && (
         <>
           <div>
-
-         <Progress totalQuestion={totalQuestion} index={index} answer={answer} />
+            <Progress
+              totalQuestion={totalQuestion}
+              index={index}
+              answer={answer}
+            />
             <Timer
               dispatch={dispatch}
               secondsRemaining={secondsRemaining}
@@ -102,23 +107,27 @@ export default function QuestionPage({quiz}: {quiz : QuestionType[]}) {
               secondsRemaining={secondsRemaining}
             />
           </div>
-          <div className=" flex w-full justify-end max-h-10 ">   
-              <Button variant="contained" disabled={answer === null} onClick={handleNextQuestion}
-              sx={{"&.Mui-disabled": {
-                backgroundColor: "gray",
-                color: "white"
-              }}}
-              >
-                {index === questions.length - 1 ? "Finish" : "Next"}
-              </Button>
+          <div className=" flex w-full justify-end max-h-10 ">
+            <Button
+              variant="contained"
+              disabled={answer === null}
+              onClick={handleNextQuestion}
+              sx={{
+                '&.Mui-disabled': {
+                  backgroundColor: 'gray',
+                  color: 'white',
+                },
+              }}
+            >
+              {index === questions.length - 1 ? 'Finish' : 'Next'}
+            </Button>
           </div>
         </>
       )}
 
-      {status === "finish" && (
+      {status === 'finish' && (
         <FinishScreen points={points} maxPoint={maxPoint} />
       )}
     </main>
   );
 }
-

@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { inter } from "./fonts";
+import type { Metadata } from 'next';
+import './globals.css';
+import { inter } from './fonts';
 
 export const metadata: Metadata = {
-  title: "Quiz App",
-  description: "Quiz app developed by Damola Taiwo",
+  title: 'Quiz App',
+  description: 'Quiz app developed by Damola Taiwo',
 };
 
 export default function RootLayout({
