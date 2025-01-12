@@ -1,5 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import OpenAI from 'openai';
-const openai = new OpenAI();
+const openai = new OpenAI({
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
+
+console.log('Env Variables:', process.env);
 
 export async function fetchQuestionsFromOpenAI() {
   try {
@@ -40,6 +48,7 @@ export async function fetchQuestionsFromOpenAI() {
       throw new Error('No choices returned from OpenAI API');
     }
     const questions = completion.choices[0].message.content.trim();
+    console.log(JSON.parse(questions).questions, 'log');
     return JSON.parse(questions).questions;
   } catch (error) {
     console.error(error);
