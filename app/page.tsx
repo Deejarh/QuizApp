@@ -99,6 +99,7 @@ export default function Home() {
         <Link
           href={{
             pathname: '/question',
+            query: { category: selectedCategory, difficulty: selectedLevel },
           }}
           passHref
         >

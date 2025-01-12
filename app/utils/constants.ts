@@ -1,7 +1,8 @@
 export const CATEGORIES: string[] = [
   'history',
-  'politics',
-  'mathematics',
+  'Javascript',
+  'Vue',
+  'React',
   'music',
 ];
 

@@ -6,16 +6,19 @@ const openai = new OpenAI({
 
 export async function GET(req) {
   try {
+    const { searchParams } = new URL(req.url); // Get search params
+    const category = searchParams.get('category');
+    const difficulty = searchParams.get('difficulty') || 'easy';
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: 'You are a helpful assistant that generates quiz questions.',
+          content: `You are a helpful assistant that generates quiz questions using ${category} and ${difficulty} provided.`,
         },
         {
           role: 'user',
-          content: `Generate a JSON object with a "questions" array containing 10 multiple-choice questions.Do not include any extra characters like backticks or Markdown formatting. 
+          content: `Generate a JSON object with a "questions" array containing 10 multiple-choice questions for the category "${category}" and difficulty "${difficulty}".Do not include any extra characters like backticks or Markdown formatting. 
                    Each question object should have the following structure:
                    - "question": (string) The text of the question.
                    - "options": (array) An array of four options as strings.

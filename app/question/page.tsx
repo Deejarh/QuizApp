@@ -1,12 +1,13 @@
 'use client';
-import Question from '../components/Question';
-import type { Question as QuestionType } from '../utils/types';
-import { Button } from '@mui/material';
 import { useReducer, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Question from '../components/Question';
 import Timer from '../components/Timer';
 import FinishScreen from '../components/FinishScreen';
 import Progress from '../components/Progress';
+import type { Question as QuestionType } from '../utils/types';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Button } from '@mui/material';
 interface StateType {
   questions: QuestionType[];
   status: 'loading' | 'active' | 'finish';
@@ -76,6 +77,10 @@ function reducer(state: StateType, action: ActionType): StateType {
 }
 
 export default function QuestionPage() {
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category'); // Extract 'category'
+  const difficulty = searchParams.get('difficulty');
+
   const [quiz, setQuiz] = useState<QuestionType[]>([]);
   const [loading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, quiz, initialState);
@@ -89,19 +94,27 @@ export default function QuestionPage() {
   useEffect(() => {
     async function fetchQuestion() {
       try {
-        const res = await fetch('/api/openai');
+        const res = await fetch(
+          `/api/openai?category=${encodeURIComponent(
+            category || ''
+          )}&difficulty=${encodeURIComponent(difficulty || 'easy')}`
+        );
         if (!res.ok) return;
-        const questions = await res.json();
-        setQuiz(questions.questions);
-        dispatch({ type: 'initialize', payload: questions.questions });
+        const data = await res.json();
+        setQuiz(data.questions);
+        dispatch({ type: 'initialize', payload: data.questions });
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
       }
     }
-    fetchQuestion();
-  }, []);
+    if (category && difficulty) {
+      fetchQuestion();
+    } else {
+      setLoading(false);
+    }
+  }, [category, difficulty]);
 
   const handleNextQuestion = () => {
     if (index === questions.length - 1) {
