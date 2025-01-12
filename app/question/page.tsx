@@ -6,7 +6,6 @@ import { useReducer, useEffect, useState } from 'react';
 import Timer from '../components/Timer';
 import FinishScreen from '../components/FinishScreen';
 import Progress from '../components/Progress';
-import { fetchQuestionsFromOpenAI } from '../lib/openai';
 import CircularProgress from '@mui/material/CircularProgress';
 interface StateType {
   questions: QuestionType[];
@@ -90,12 +89,13 @@ export default function QuestionPage() {
   useEffect(() => {
     async function fetchQuestion() {
       try {
-        const questions = await fetchQuestionsFromOpenAI();
-        console.log(questions, 'client');
-        setQuiz(questions);
-        dispatch({ type: 'initialize', payload: questions });
+        const res = await fetch('/api/openai');
+        if (!res.ok) return;
+        const questions = await res.json();
+        setQuiz(questions.questions);
+        dispatch({ type: 'initialize', payload: questions.questions });
       } catch (error) {
-        console.error(error);
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -118,7 +118,7 @@ export default function QuestionPage() {
     );
   }
 
-  if (!quiz) {
+  if (!quiz || quiz.length === 0) {
     return (
       <div className="error">Failed to load questions. Please try again.</div>
     );

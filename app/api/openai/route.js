@@ -1,15 +1,10 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import OpenAI from 'openai';
+
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
 });
 
-console.log('Env Variables:', process.env);
-
-export async function fetchQuestionsFromOpenAI() {
+export async function GET(req) {
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -47,11 +42,17 @@ export async function fetchQuestionsFromOpenAI() {
     if (!completion.choices || completion.choices.length === 0) {
       throw new Error('No choices returned from OpenAI API');
     }
-    const questions = completion.choices[0].message.content.trim();
-    console.log(JSON.parse(questions).questions, 'log');
-    return JSON.parse(questions).questions;
+    const data = completion.choices[0].message.content.trim();
+    return new Response(
+      JSON.stringify({ questions: JSON.parse(data).questions }),
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
-    console.error(error);
-    return error;
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { 'Content-Type': 'application/json' },
+      status: 500,
+    });
   }
 }
