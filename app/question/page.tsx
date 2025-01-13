@@ -1,6 +1,5 @@
 'use client';
 import { useReducer, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Question from '../components/Question';
 import Timer from '../components/Timer';
 import FinishScreen from '../components/FinishScreen';
@@ -77,9 +76,13 @@ function reducer(state: StateType, action: ActionType): StateType {
 }
 
 export default function QuestionPage() {
-  const searchParams = useSearchParams();
-  const category = searchParams.get('category'); // Extract 'category'
-  const difficulty = searchParams.get('difficulty');
+  let category: string | null = null;
+  let difficulty: string | null = 'easy';
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    category = params.get('category');
+    difficulty = params.get('difficulty');
+  }
 
   const [quiz, setQuiz] = useState<QuestionType[]>([]);
   const [loading, setLoading] = useState(true);
