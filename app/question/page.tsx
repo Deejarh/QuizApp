@@ -26,7 +26,7 @@ type ActionType =
 function initialState(quiz: QuestionType[]): StateType {
   return {
     questions: quiz,
-    status: 'active',
+    status: 'loading',
     index: 0,
     answer: null,
     points: 0,
@@ -40,6 +40,7 @@ function reducer(state: StateType, action: ActionType): StateType {
       return {
         ...state,
         questions: action.payload,
+        status: 'active',
       };
 
     case 'newAnswer': {
@@ -97,6 +98,7 @@ export default function QuestionPage() {
   useEffect(() => {
     async function fetchQuestion() {
       try {
+        setLoading(true);
         const res = await fetch(
           `/api/openai?category=${encodeURIComponent(
             category || ''
@@ -134,7 +136,7 @@ export default function QuestionPage() {
     );
   }
 
-  if (!quiz || quiz.length === 0) {
+  if (!quiz) {
     return (
       <div className="error">Failed to load questions. Please try again.</div>
     );
